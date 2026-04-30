@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表白专属页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            background: url("imgBG.jpg") center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 玩偶图片 */
+        .doll-img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+
+        /* 文字 */
+        .text {
+            font-size: 28px;
+            color: #444;
+            margin-bottom: 60px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* 按钮容器 */
+        .btn-group {
+            display: flex;
+            gap: 40px;
+        }
+
+        /* 通用按钮样式 */
+        .btn {
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            padding: 16px 40px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-yes {
+            background-color: #f08080;
+            color: white;
+        }
+
+        .btn-no {
+            background-color: #6495ed;
+            color: white;
+        }
+
+        /* 按钮变化的过渡效果 */
+        .btn-yes.grow {
+            transform: scale(1.2);
+            padding: 20px 50px;
+            font-size: 26px;
+        }
+
+        .btn-no.shrink {
+            transform: scale(0.6);
+            opacity: 0.7;
+        }
+
+        .btn-no.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 玩偶图片 -->
+        <img src="img1.png" alt="玩偶" class="doll-img" id="dollImg">
+
+        <!-- 文字 -->
+        <div class="text" id="text">可以接受我的爱吗</div>
+
+        <!-- 按钮组 -->
+        <div class="btn-group">
+            <button class="btn btn-yes" id="btnYes">可以</button>
+            <button class="btn btn-no" id="btnNo">？你认真的吗…</button>
+        </div>
+    </div>
+
+    <script>
+        // 点击不可以的次数
+        let clickNoCount = 0;
+
+        // 获取元素
+        const dollImg = document.getElementById('dollImg');
+        const textEl = document.getElementById('text');
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+
+        // 图片路径配置（你可以直接在这里修改）
+        const imgList = {
+            initial: 'img1.png',
+            no1: 'img2.png',
+            no2: 'img3.png',
+            no3: 'img4.png',
+            yes: 'img5.png'
+        };
+
+        // 文字配置
+        const textList = {
+            initial: '可以接受我的爱吗',
+            no1: '为什么不点可以',
+            no2: '再不点击可以我就生气了',
+            no3: '生气了',
+            yes: '要一直接受我对你的爱哦'
+        };
+
+        // 点击“不可以”
+        btnNo.addEventListener('click', () => {
+            clickNoCount++;
+
+            // 每次点击，“可以”按钮变大，“不可以”按钮变小
+            btnYes.classList.add('grow');
+            btnNo.classList.add('shrink');
+
+            // 根据点击次数切换状态
+            if (clickNoCount === 1) {
+                dollImg.src = imgList.no1;
+                textEl.innerText = textList.no1;
+            } else if (clickNoCount === 2) {
+                dollImg.src = imgList.no2;
+                textEl.innerText = textList.no2;
+            } else if (clickNoCount === 3) {
+                dollImg.src = imgList.no3;
+                textEl.innerText = textList.no3;
+                // 第三次点击后，“不可以”按钮消失
+                btnNo.classList.add('hidden');
+            }
+        });
+
+        // 点击“可以”
+        btnYes.addEventListener('click', () => {
+            dollImg.src = imgList.yes;
+            textEl.innerText = textList.yes;
+            // 隐藏按钮组
+            document.querySelector('.btn-group').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
